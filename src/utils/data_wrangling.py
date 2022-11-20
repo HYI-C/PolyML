@@ -10,11 +10,15 @@ class DataWrangling:
         self,
         data = None, 
         Y_Ranges = None,
+        config = None,
     ):
         self.data = data
         self.Y_Ranges = Y_Ranges
         ms = Settings()
-        ms.configure()
+        if config == None:
+            ms.configure()
+        else: 
+            ms.configure("{}".format(config))
         self.num_vertices = ms.num_vertices
         self.vertices = ms.vertices
         self.pluckers = ms.pluckers
@@ -32,8 +36,10 @@ class DataWrangling:
             Pad_check = Pad             #...true to perform padding, false to select according to length
             Pad_choice = Pchoice        #...number to pad onto end of vectors, only relevant when padding
             GCD_scheme = gcd             #...whether to augment plucker coords by: (0) nothing, (1) pairwise gcds, (2) (n-1)-gcds
-            Y_choice_range = self.Y_Ranges[target-3][1] - self.Y_Ranges[target-3][0] #... (max - min) for the selected varible to ML. Note that Y_range starts at 3
-
+            try:
+                Y_choice_range = self.Y_Ranges[target-3][1] - self.Y_Ranges[target-3][0] #... (max - min) for the selected varible to ML. Note that Y_range starts at 3
+            except:
+                Y_choice_range = self.Y_Ranges[target][1] - self.Y_Ranges[target][0]
             #Extract relevant X & Y data. Here we add the input properties to
             #polygons_X and the output properties to polygons_Y
             polygons_X, polygons_Y, last_poly_pts = [], [], []

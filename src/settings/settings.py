@@ -7,22 +7,20 @@ class Borg:
 class Settings(Borg):
     def configure(
         self,
-        quickstart_settings = "custom",
+        quickstart_settings = None,
     ):
         self._configure_settings(quickstart_settings)
 
         return
 
     def _configure_settings(self, quickstart_settings: str):
-        if quickstart_settings == "low":
-            import settings.quickstart1 as settings_module
-        if quickstart_settings == "high":
-            import settings.quickstart2 as settings_module
+        if quickstart_settings == "4d_PV":
+            import settings.four_dim as settings_module
         if quickstart_settings == "default":
             import settings.quickstart as settings_module
-        else:
+        elif quickstart_settings == None:
             import settings.custom as settings_module
-
+            
 
         for var in dir(settings_module):
             if not var.startswith("__"):
