@@ -28,3 +28,11 @@ batch_size = 32
 layer_sizes = [64, 64, 64, 64]
 
 k = 5 #...k-fold vallidation
+
+
+'''
+Dependencies
+- scipy
+- tensorflow
+
+'''

@@ -29,7 +29,6 @@ class ImportPolyData:
         try:
             Y_Ranges = [[min([poly[i] for poly in data]),max([poly[i] for poly in data])] for i in [3,4,5,6,7,8,9,10]]
         except:
-            #Y_Ranges = [[min([poly[i] for poly in data]),max([poly[i] for poly in data])] for i in [0,1,2,3]]
-            Y_Ranges = min([float(poly[2]) for poly in data]),max([float(poly[2]) for poly in data])
-            test = [poly[2] for poly in data]
+            #Y_Ranges = [[min([float(poly[i]) for poly in data]),max([float(poly[i]) for poly in data])] for i in [0,1,2,3]]
+            Y_Ranges = [min([float(poly[2]) for poly in data]),max([float(poly[2]) for poly in data])]
         return Y_Ranges

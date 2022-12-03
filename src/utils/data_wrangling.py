@@ -39,7 +39,7 @@ class DataWrangling:
             try:
                 Y_choice_range = self.Y_Ranges[target-3][1] - self.Y_Ranges[target-3][0] #... (max - min) for the selected varible to ML. Note that Y_range starts at 3
             except:
-                Y_choice_range = self.Y_Ranges[target][1] - self.Y_Ranges[target][0]
+                Y_choice_range = self.Y_Ranges[1] - self.Y_Ranges[0]
             #Extract relevant X & Y data. Here we add the input properties to
             #polygons_X and the output properties to polygons_Y
             polygons_X, polygons_Y, last_poly_pts = [], [], []
@@ -48,14 +48,14 @@ class DataWrangling:
                     if input == self.vertices and poly[self.vertices]!=last_poly_pts: #...skip repeated lines in dataset (where plucker coords permuted)
                         last_poly_pts = poly[self.vertices] #...keep track of last polygon, so know when moved onto next one
                         polygons_X.append(list(chain(*literal_eval(poly[input])))) #...if using vertices need to flatten to a vector                    
-                        polygons_Y.append(poly[target])
+                        polygons_Y.append(literal_eval(poly[target]))
                     elif input == self.pluckers: 
                         if GCD_scheme == 1:   #...augment vectors with pairwise gcds: pairwise between plucker coordinates.
                             polygons_X.append(literal_eval(poly[input])+[np.gcd(*np.absolute(x)) for x in combinations(literal_eval(poly[input]),2)]) # need to use literal_eval because data is saved as string
                         elif GCD_scheme == 2: #...augment vectors with (n-1)-gcds
                             polygons_X.append(literal_eval(poly[input])+[np.gcd.reduce(np.absolute(x)) for x in combinations(literal_eval(poly[2]),poly[3]-1)])
                         else: polygons_X.append(literal_eval(poly[input]))
-                        polygons_Y.append(poly[target])
+                        polygons_Y.append(literal_eval(poly[target]))
             number_polygon = len(polygons_Y)
 
                 

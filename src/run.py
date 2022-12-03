@@ -24,19 +24,19 @@ ms.configure(quickstart_settings="4d_PV")
 data, headings = ImportPolyData().get_db_data(path = ms.path, file_name = ms.table_name)
 # data = ImportPolyData().dual_to_float(data=data, float_inx = ms.dual_volume)
 # #...This is for if there is dual volume
-print("volume", data[7][2], data[8][2])
+
 Y_Ranges = ImportPolyData().get_range(data)
-print("y_ranges", Y_Ranges)
 
 # Create input and target
 polygons_X, polygons_Y, Y_choice_range, number_polygon = DataWrangling(data = data, Y_Ranges=Y_Ranges, config = "4d_PV").create_targets(input = ms.pluckers, target = ms.volume)
-
 # Create training and test data
+
 Training_data, Training_values, Testing_data, Testing_values = DataWrangling(config = "4d_PV").tts(polygons_X=polygons_X, polygons_Y=polygons_Y)
 
 # Do the ML
-#Model = GeneralML(Y_choice_range = Y_choice_range)
-#Model.seq_model_train(Training_data=Training_data, Training_values=Training_values, Testing_data=Testing_data, Testing_values=Testing_values)
+Model = GeneralML(Y_choice_range = Y_choice_range)
+Model.seq_model_train(Training_data=Training_data, Training_values=Training_values, Testing_data=Testing_data, Testing_values=Testing_values)
+print("testing accurary", Model.acc_list)
 print(ms.path)
 '''
 # Output the average testing metrics and losses

@@ -1,7 +1,3 @@
 #import libraries
-from settings.settings import Settings
-
-ms = Settings()
-ms.configure()
-
-print(ms.path)
+import numpy as np
+import tensorflow as tf

@@ -41,19 +41,16 @@ class GeneralML:
 
     def seq_model_train(self, Training_data=None, Training_values=None, Testing_data=None, Testing_values=None):
         # Training the model   
-
+        self.seq_model()
         for i in range(self.k):
-            self.seq_model()
-            
             Y = Training_data[i]
             X = Training_values[i]
-            #Y = tf.convert_to_tensor(Y, dtype=tf.int64)
-            #X = tf.convert_to_tensor(X, dtype=tf.int64)
 
             self.hist_data.append(self.model.fit(Y, X, batch_size=self.batch_size, epochs=self.num_epochs, shuffle=True, validation_split=0., verbose=0))
             self.seq_model_test(Testing_data=Testing_data, Testing_values=Testing_values, i=i)
-        # Testing the model
-
+        return
+        
+    # Testing the model
     def seq_model_test(self, Testing_data= None, Testing_values = None, i=0):
         predictions = np.ndarray.flatten(self.model.predict(Testing_data[i]))
         self.loss_data.append([float(keras.losses.MAE(Testing_values[i],predictions)),float(keras.losses.logcosh(Testing_values[i],predictions)),float(keras.losses.MAPE(Testing_values[i],predictions)),float(keras.losses.MSE(Testing_values[i],predictions))])
