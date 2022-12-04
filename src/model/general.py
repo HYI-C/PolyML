@@ -33,15 +33,16 @@ class GeneralML:
         model = keras.Sequential()
         for layer_size in self.layer_sizes:
             model.add(keras.layers.Dense(layer_size, activation = self.act_fn))
-            #model.add(keras.layers.Dropout(0.1))
+            model.add(keras.layers.Dropout(0.1))
         model.add(keras.layers.Dense(1))
-        model.compile(optimizer='adam', loss='logcosh') #...choose from: [MAE,MAPE,MSE,logcosh]
+        model.compile(optimizer='adam', loss='MAE') #...choose from: [MAE,MAPE,MSE,logcosh], default is logcosh
         self.model = model
         return 
 
     def seq_model_train(self, Training_data=None, Training_values=None, Testing_data=None, Testing_values=None):
         # Training the model   
         self.seq_model()
+        
         for i in range(self.k):
             Y = Training_data[i]
             X = Training_values[i]

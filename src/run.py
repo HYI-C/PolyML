@@ -36,8 +36,8 @@ Training_data, Training_values, Testing_data, Testing_values = DataWrangling(con
 # Do the ML
 Model = GeneralML(Y_choice_range = Y_choice_range)
 Model.seq_model_train(Training_data=Training_data, Training_values=Training_values, Testing_data=Testing_data, Testing_values=Testing_values)
-print("testing accurary", Model.acc_list)
-print(ms.path)
+print("Testing accurary:", Model.acc_list)
+
 '''
 # Output the average testing metrics and losses
 with open('./MLResults.txt','a') as myfile:
