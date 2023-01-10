@@ -1,6 +1,10 @@
 import os
 import scipy.constants as spc
 
+#flag 
+check_3d = True
+
+#paths
 path = "./data/dim_2_plucker.db"
 table_name = "dim_2_plucker"
 
@@ -27,8 +31,8 @@ num_epochs = 20
 batch_size = 32
 layer_sizes = [64, 64, 64, 64]
 
-k = 5 #...k-fold vallidation
-
+k = 5 #...k-fold validation
+n = 6 #...number of vertices to learn, apparently there are none with n=6
 
 '''
 Dependencies

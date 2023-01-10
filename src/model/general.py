@@ -29,7 +29,7 @@ class GeneralML:
     def act_fn(self, x): 
         return keras.activations.relu(x,alpha=0.01)
 
-    def seq_model(self):
+    def seq_model(self): #...defines an out-of-the-box Sequential model with Keras
         model = keras.Sequential()
         for layer_size in self.layer_sizes:
             model.add(keras.layers.Dense(layer_size, activation = self.act_fn))
@@ -42,11 +42,10 @@ class GeneralML:
     def seq_model_train(self, Training_data=None, Training_values=None, Testing_data=None, Testing_values=None):
         # Training the model   
         self.seq_model()
-        
         for i in range(self.k):
             Y = Training_data[i]
             X = Training_values[i]
-
+            print(Y)
             self.hist_data.append(self.model.fit(Y, X, batch_size=self.batch_size, epochs=self.num_epochs, shuffle=True, validation_split=0., verbose=0))
             self.seq_model_test(Testing_data=Testing_data, Testing_values=Testing_values, i=i)
         return

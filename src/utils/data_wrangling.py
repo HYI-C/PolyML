@@ -15,24 +15,29 @@ class DataWrangling:
         self.data = data
         self.Y_Ranges = Y_Ranges
         ms = Settings()
-        if config == None:
-            ms.configure()
-        else: 
-            ms.configure("{}".format(config))
         self.num_vertices = ms.num_vertices
         self.vertices = ms.vertices
         self.pluckers = ms.pluckers
         self.inversion_check = ms.inversion_check
         self.volume = ms.volume
         self.k = ms.k
-        
+        try:
+            if ms.n:
+                self.n = ms.n
+        except:
+            pass
+    #TODO the main problem here is that the pluckers are of different lengths,
+    # which is something that our neural network can't handle. 
     def create_targets(self, input = 2, target = 7, poly_n=0,Pad=1,Pchoice=0,gcd=0,k_cv=5,split=0.8):
             '''This is the general function for all investigations. This
             defaults to an input of pluckers and target of volume'''
             #Extract relevant parts of data to ML 
             #Data selection hyper-params
             #X_choice, Y_choice = X, Y   #...choose what to ML (use 'headings': id, vertices, plucker, plucker_len, num_vertices, num_points, num_interior_points, volume, dual_volume, gorenstein_idx, codimension)
-            n = poly_n                  #...select number of vertices to ML, use '0' to mean all
+            try:
+                n = self.n
+            except:
+                n = poly_n                  #...select number of vertices to ML, use '0' to mean all
             Pad_check = Pad             #...true to perform padding, false to select according to length
             Pad_choice = Pchoice        #...number to pad onto end of vectors, only relevant when padding
             GCD_scheme = gcd             #...whether to augment plucker coords by: (0) nothing, (1) pairwise gcds, (2) (n-1)-gcds
@@ -49,13 +54,14 @@ class DataWrangling:
                         last_poly_pts = poly[self.vertices] #...keep track of last polygon, so know when moved onto next one
                         polygons_X.append(list(chain(*literal_eval(poly[input])))) #...if using vertices need to flatten to a vector                    
                         polygons_Y.append(literal_eval(poly[target]))
-                    elif input == self.pluckers: 
+                    elif input == self.pluckers: #...usually we use this
                         if GCD_scheme == 1:   #...augment vectors with pairwise gcds: pairwise between plucker coordinates.
                             polygons_X.append(literal_eval(poly[input])+[np.gcd(*np.absolute(x)) for x in combinations(literal_eval(poly[input]),2)]) # need to use literal_eval because data is saved as string
                         elif GCD_scheme == 2: #...augment vectors with (n-1)-gcds
                             polygons_X.append(literal_eval(poly[input])+[np.gcd.reduce(np.absolute(x)) for x in combinations(literal_eval(poly[2]),poly[3]-1)])
-                        else: polygons_X.append(literal_eval(poly[input]))
-                        polygons_Y.append(literal_eval(poly[target]))
+                        else:
+                            polygons_X.append(literal_eval(poly[input]))
+                            polygons_Y.append(literal_eval(str(poly[target])))
             number_polygon = len(polygons_Y)
 
                 
